@@ -1,2 +1,2 @@
-# nxui-template
+# NXUI Template
  NXUI Template

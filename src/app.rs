@@ -1,12 +1,13 @@
-use nxui::NativesAndMessaging::WINDOWSTYLE_OVERLAPPED;
-use nxui::window::{Window, WindowAttributes};
-use nxui::windowclass::WindowClass;
+use nxui::io::storage::Storage;
+use nxui::messagebox::MessageBox;
+use nxui::natives_and_messaging::*;
+use nxui::window::{Application, Frame, WindowAttributes};
 
-pub struct SampleWindow {
+pub struct TemplateApplication {
 
 }
 
-impl SampleWindow {
+impl TemplateApplication {
     pub fn new() -> Self {
         Self {
 
@@ -14,34 +15,37 @@ impl SampleWindow {
     }
 }
 
-impl Window for SampleWindow {
-    fn attributes(&self) -> WindowAttributes {
-        let class = WindowClass::new("window".to_string(), "org.example.demo".to_string());
-        let attributes = WindowAttributes::new(
-            class,
-            WINDOWSTYLE_OVERLAPPED,
-            "NXUI Template App".to_string(),
-            1280,
-            750,
-            500,
-            500,
-        );
-        attributes
+impl Application for TemplateApplication {
+    fn app_name(&self) -> String {
+        "NXUI Template App".to_string()
     }
 
-    // fn startup(&self) {
-    //     todo!()
-    // }
-    //
-    // fn ui(&self) {
-    //     todo!()
-    // }
-    //
-    // fn run(&self, attributes: WindowAttributes) {
-    //     todo!()
-    // }
-    //
-    // fn exit(&self) {
-    //     todo!()
-    // }
+    fn attributes(&self) -> WindowAttributes {
+        WindowAttributes::new(WINDOWSTYLE_NORMAL,"Hello NXUI!".to_string(),1280,750,70,70)
+    }
+
+    fn startup(&self, _storage: Storage) {
+        println!("Startup!")
+    }
+
+    fn ui(&self, frame: Frame) {
+        frame.show();
+        match MessageBox::new("Do you want to maximize the window?".to_string(), "Do you want to maximize the window?".to_string(), DIALOGSTYLE_QUESTION, BUTTONSTYLE_YESNO).show() {
+            RESULTS_YES => {
+                frame.show_maximized();
+                frame.set_title("The window has been maximized.".to_string());
+            }
+
+            RESULTS_NO => {
+                frame.show_minimized();
+                frame.set_title("The window has been minimized.".to_string());
+            }
+
+            _ => {}
+        }
+    }
+
+    fn exit(&self) {
+        println!("Exit!")
+    }
 }

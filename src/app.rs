@@ -21,7 +21,7 @@ impl Application for TemplateApplication {
     }
 
     fn attributes(&self) -> WindowAttributes {
-        WindowAttributes::new(WINDOWSTYLE_NORMAL,"Hello NXUI!".to_string(),1280,750,70,70)
+        WindowAttributes::new(WINDOWSTYLE_NORMAL,"Hello NXUI!".to_string(),1280,750,70,70,false)
     }
 
     fn startup(&self, _storage: Storage) {
@@ -30,7 +30,7 @@ impl Application for TemplateApplication {
 
     fn ui(&self, frame: Frame) {
         frame.show();
-        match MessageBox::new("Do you want to maximize the window?".to_string(), "Do you want to maximize the window?".to_string(), DIALOGSTYLE_QUESTION, BUTTONSTYLE_YESNO).show() {
+        match MessageBox::new("Do you want to maximize the window?".to_string(), "Do you want to maximize the window?".to_string(), DIALOGSTYLE_QUESTION, BUTTONSTYLE_YESNO).show(frame.clone()) {
             RESULTS_YES => {
                 frame.show_maximized();
                 frame.set_title("The window has been maximized.".to_string());
